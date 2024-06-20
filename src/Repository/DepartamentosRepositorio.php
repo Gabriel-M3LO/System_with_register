@@ -2,29 +2,33 @@
 
 class DepartamentosRepositorio
 {
-    private PDO $pdo;
+    private PDO $db;
 
-    /**
-     * @param PDO $pdo
-     */
-    public function __construct(PDO $pdo)
+    public function __construct(PDO $db)
     {
-        $this->pdo = $pdo;
+        $this->db = $db;
     }
 
-    public function opcoesDepartamentos() :array
+    public function getDepartamentos(): array
     {
-        $sql1 = "SELECT * FROM departamentos";
-        $statement = $this->pdo->query($sql1);
-        $depEmpresa = $statement->fetchAll(pdo::FETCH_ASSOC);
+        $stmt = $this->db->prepare('SELECT * FROM departamentos');
+        $stmt->execute();
+        $departamentos = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-        $dadosEmpresa = array_map(function ($Empresa) {
-            return new Product($Empresa['idDepartamentos'],
-                $Empresa['Nome'],
-                $Empresa['Descricao'],
-                $Empresa['Imagem']
+        return array_map(function ($departamento) {
+            return new Product(
+                $departamento['idDepartamentos'],
+                $departamento['nome'],
+                $departamento['descricao'],
+                $departamento['imagem'],
+                $departamento['link'],
+                $departamento['idFiles'],
+                $departamento['title'] ?? '',
+                $departamento['linkDashboard'] ?? '',
+                $departamento['img'] ?? ''
             );
-        }, $depEmpresa);
-        return $dadosEmpresa;
+        }, $departamentos);
     }
 }
+
+?>

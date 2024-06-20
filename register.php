@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-include('config.php');
+include('db_config.php');
 
 // Protegendo as entradas contra SQL Injection
 $usuario = $conn->real_escape_string($_POST['usuario']);

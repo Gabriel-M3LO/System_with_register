@@ -1,33 +1,36 @@
 <?php
 session_start();
+require 'src/db_config.php';
 
-if (empty($_POST) || empty($_POST["email"]) || empty($_POST["senha"])) {
-    echo "<script>location.href='index.php';</script>";
-    exit();
-}
+$email = $_POST['email'];
+$password = $_POST['password'];
 
-include ('config.php');
+// Prepare a consulta SQL para evitar SQL Injection
+$stmt = $conn->prepare("SELECT idusers, password, departamento, empresa, role FROM users WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$stmt->store_result();
 
-$email = $conn->real_escape_string($_POST['email']);
-$senha = $conn->real_escape_string($_POST['senha']);
+if ($stmt->num_rows > 0) {
+    $stmt->bind_result($id, $hashed_password, $departamento, $empresa, $role);
+    $stmt->fetch();
 
-$sql = "SELECT * FROM usuarios WHERE email = '$email' AND senha = '$senha'";
-
-$res = $conn->query($sql) or die($conn->error);
-
-$row = $res->fetch_object();
-
-$qtd = $res->num_rows;
-
-if ($qtd > 0) {
-    $_SESSION["email"] = $email;
-    $_SESSION["senha"] = $row->senha;
-    echo "<script>location.href='dashboard.php';</script>";
-    exit();
+    // Verifica se a senha está correta
+    if ($password === $hashed_password) {  // Comparação direta de senha em texto plano
+        // Armazena informações na sessão
+        $_SESSION['user_id'] = $id;
+        $_SESSION['email'] = $email;
+        $_SESSION['departamento'] = $departamento;
+        $_SESSION['empresa'] = $empresa;
+        $_SESSION['role'] = $role;
+        header("Location: dashboard.php");
+    } else {
+        header("Location: index.php?error=Senha incorreta.");
+    }
 } else {
-    echo "<script>alert('Usuário e/ou senha incorreto(s)');</script>";
-    echo "<script>location.href='index.php';</script>";
-    exit();
+    header("Location: index.php?error=Usuário não encontrado.");
 }
 
+$stmt->close();
+$conn->close();
 ?>
