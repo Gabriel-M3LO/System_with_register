@@ -1,3 +1,4 @@
+import app
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 from flask_mysqldb import MySQL
 from flask_session import Session
@@ -9,7 +10,6 @@ app.config.from_object('config.Config')
 mysql = MySQL(app)
 Session(app)
 
-
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -17,7 +17,7 @@ def login():
         password = request.form['password']
 
         cur = mysql.connection.cursor()
-        cur.execute("SELECT idusers, password, departamento, empresa, role FROM users WHERE email = %s", (email,))
+        cur.execute("SELECT idusers, password, departamento, empresa, role, name FROM users WHERE email = %s", (email,))
         user = cur.fetchone()
         cur.close()
 
@@ -27,7 +27,8 @@ def login():
             session['departamento'] = user[2]
             session['empresa'] = user[3]
             session['role'] = user[4]
-            return redirect(url_for('dashboard'))
+            session['name'] = user[5]
+            return redirect(url_for('home'))
         else:
             flash('Invalid login credentials')
 
@@ -52,21 +53,23 @@ def dashboard():
 
     return render_template('dashboard.html', arquivos=arquivos)
 
-
-@app.route('/conteudo/<department>')
-def conteudo(department):
+@app.route('/home')
+def home():
     if 'user_id' not in session:
         return redirect(url_for('login'))
 
     cur = mysql.connection.cursor()
-    cur.execute("SELECT Title, link, Img, Departamento, Empresa FROM files WHERE Departamento = %s AND Empresa = %s",
-                (department, session['empresa']))
+    if session['role'] == 'general':
+        cur.execute("SELECT Title, link, Img, Departamento, Empresa FROM files")
+    else:
+        cur.execute(
+            "SELECT Title, link, Img, Departamento, Empresa FROM files WHERE Departamento = %s AND Empresa = %s",
+            (session['departamento'], session['empresa']))
 
     arquivos = cur.fetchall()
     cur.close()
 
-    return render_template('conteudo.html', arquivos=arquivos, department=department)
-
+    return render_template('home.html', arquivos=arquivos)
 
 @app.route('/logout')
 def logout():

@@ -2,34 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Register</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
           integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-</head>
+    <link rel="stylesheet" href="../static/css/style.css">
 <body>
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6">
-            <h2 class="mt-5">Login</h2>
-            {% with messages = get_flashed_messages() %}
-                {% if messages %}
-                    <div class="alert alert-danger" role="alert">
-                        {{ messages[0] }}
+<div>
+    <div class="d-flex justify-content-between">
+        <div style="background-image: url('/static/img/bg.jpg'); width: 65%; height: 100vh">
+            <div class="logintext">
+                <h1>Gestão Remota</h1>
+                <h2 style="font-size: 20px; margin-top: 2px">Bem-vindo!</h2>
+            </div>
+        </div>
+        <div>
+            <div class="lo" style="margin-right: 100px; margin-top: 50px">
+                <div class="full-height-div d-flex justify-content-center align-items-center">
+                    <img src="img/logo.png" style="width: 30%; height: auto%; margin-top: 20%" alt="">
+                </div>
+                <form action="/" method="post" style="margin-top: 5%">
+                    <h2 style="text-align: center; color: #b8b0b0">LOGIN</h2>
+                    <div style="text-align: center">
+                        <input type="text" id="email" name="email" placeholder="email" style="margin-top: 10px"
+                               required> <br>
+                        <input type="password" id="passwword" name="password" placeholder="Senha" style="margin-top: 5px"
+                               required>
+                        <br>
                     </div>
-                {% endif %}
-            {% endwith %}
-            <form action="/" method="post">
-                <div class="mb-3">
-                    <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" required>
-                </div>
-                <div class="mb-3">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" required>
-                </div>
-                <button type="submit" class="btn btn-primary">Login</button>
-            </form>
+                    <div style="margin-top: 15px; text-align: center">
+                        <button type="submit" class="btn btn-primary" style="width: 350px" ">Login</button>
+                    </div>
+                </form>
+                <div class="d-flex justify-content-left" style="margin-top: 15px"></div>
+            </div>
         </div>
     </div>
 </div>

@@ -10,11 +10,15 @@
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">Gestão Remota</a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="{{ url_for('home') }}">Home</a>
+                </li>
                 <li class="nav-item">
                     <a class="nav-link active" aria-current="page" href="{{ url_for('dashboard') }}">Dashboard</a>
                 </li>
@@ -27,39 +31,60 @@
 </nav>
 
 <div class="container">
-    <h2>Bem-vindo, {{ session.email }}</h2>
-    <p>Empresa: {{ session.empresa }}</p>
-    <p>Departamento: {{ session.departamento }}</p>
 
-    <div class="row">
-        <div class="card" style="width: 18rem; margin: 15px;">
-            <div class="card-body">
-                <h5 class="card-title">{{ session.departamento }}</h5>
-                <p class="card-text">Empresa: {{ session.empresa }}</p>
-                <a href="{{ url_for('conteudo', department=session.departamento) }}" class="btn btn-primary">Ver Arquivos</a>
-            </div>
-        </div>
+
+    <div style="margin-top: 30px">
+        <h2>Bem-vindo, {{ session.name }}</h2>
     </div>
 
     {% if session.role == 'general' %}
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#cadastrarModal">
         Cadastrar
     </button>
+    {% endif %}
 
-    <h3>Todos os Arquivos</h3>
+    {% if session.role == 'Department' %}
+    <h4>Todos os Arquivos</h4>
     <div class="row">
         {% for arquivo in arquivos %}
-            <div class="card" style="width: 18rem; margin: 15px;">
-                <img src="{{ url_for('static', filename='img/' ~ arquivo[2]) }}" class="card-img-top" alt="..." style="width: 270px; height: 170px">
-                <div class="card-body">
-                    <h5 class="card-title">{{ arquivo[0] }}</h5>
-                    <p class="card-text">Departamento: {{ arquivo[3] }}</p>
-                    <p class="card-text">Empresa: {{ arquivo[4] }}</p>
-                    <a href="{{ arquivo[1] }}" class="btn btn-primary">Clique aqui</a>
-                </div>
+        <div class="card" style="width: 18rem; margin: 15px;">
+            <img src="{{ url_for('static', filename='img/' ~ arquivo[2]) }}" class="card-img-top" alt="..."
+                 style="width: 270px; height: 170px">
+            <div class="card-body">
+                <h5 class="card-title">{{ arquivo[0] }}</h5>
+                <p class="card-text">Departamento: {{ arquivo[3] }}</p>
+                <p class="card-text">Empresa: {{ arquivo[4] }}</p>
+                <a href="{{ arquivo[1] }}" class="btn btn-primary">Clique aqui</a>
             </div>
+        </div>
         {% endfor %}
     </div>
+    {% endif %}
+
+    {% if session.role == 'general' %}
+    <h3>Todos os Arquivos</h3>
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">#</th>
+            <th scope="col">Titulo</th>
+            <th scope="col">Empresa</th>
+            <th scope="col">Departamento</th>
+            <th scope="col">link</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for arquivo in arquivos %}
+        <tr>
+            <th scope="row">{{ loop.index }}</th>
+            <td>{{ arquivo[0] }}</td>
+            <td>{{ arquivo[4] }}</td>
+            <td>{{ arquivo[3] }}</td>
+            <td>{{ arquivo[1] }}</td>
+        </tr>
+        {% endfor %}
+        </tbody>
+    </table>
     {% endif %}
 </div>
 
