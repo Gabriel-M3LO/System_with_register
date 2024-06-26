@@ -5,3 +5,4 @@ class Config:
     MYSQL_USER = 'root'
     MYSQL_PASSWORD = 'root'
     MYSQL_DB = 'gestao_correta'
+

@@ -63,29 +63,31 @@
 
     {% if session.role == 'general' %}
     <h3>Todos os Arquivos</h3>
-    <table class="table">
-        <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">Titulo</th>
-            <th scope="col">Empresa</th>
-            <th scope="col">Departamento</th>
-            <th scope="col">link</th>
-        </tr>
-        </thead>
-        <tbody>
-        {% for arquivo in arquivos %}
-        <tr>
-            <th scope="row">{{ loop.index }}</th>
-            <td>{{ arquivo[0] }}</td>
-            <td>{{ arquivo[4] }}</td>
-            <td>{{ arquivo[3] }}</td>
-            <td>{{ arquivo[1] }}</td>
-        </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    {% endif %}
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Titulo</th>
+                <th scope="col">Empresa</th>
+                <th scope="col">Departamento</th>
+                <th scope="col">link</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for arquivo in arquivos %}
+            <tr>
+                <th scope="row">{{ loop.index }}</th>
+                <td>{{ arquivo[0] }}</td>
+                <td>{{ arquivo[4] }}</td>
+                <td>{{ arquivo[3] }}</td>
+                <td>{{ arquivo[1] }}</td>
+            </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        {% endif %}
+    </div>
 </div>
 
 <!-- Modal -->

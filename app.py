@@ -10,6 +10,7 @@ app.config.from_object('config.Config')
 mysql = MySQL(app)
 Session(app)
 
+
 @app.route('/', methods=['GET', 'POST'])
 def login():
     if request.method == 'POST':
@@ -53,6 +54,7 @@ def dashboard():
 
     return render_template('dashboard.html', arquivos=arquivos)
 
+
 @app.route('/home')
 def home():
     if 'user_id' not in session:
@@ -70,6 +72,7 @@ def home():
     cur.close()
 
     return render_template('home.html', arquivos=arquivos)
+
 
 @app.route('/logout')
 def logout():
