@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+</head>
+<body>
+
+<div class="container-fluid" style="height: 100%">
+    <div class="row" style="height: 100%">
+        <div class="col- containernav navlateral " style="width: 20% ;background-color: #124f72">
+            <img src="static/img/logo.png" alt="" class="imagelogo">
+            <img src="static/img/profile.jpg" class="img-fluid mx-auto d-block imageprofile" alt="...">
+            <h3>Olá, {{ session.name }}!</h3>
+            <h4>Empresa: {{ session.empresa }}</h4>
+            <h4>Departamento: {{ session.departamento }}</h4>
+            <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
+                <a class="btn btn-primary anavlateral" href="/home" role="button">Início</a>
+                <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
+                <a class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" href="/logout" role="button">Sair</a>
+            </div>
+        </div>
+        <div class="col- containernav navlateral " style="width: 80%">
+            <div class="col-md-8 offset-md-2">
+                <div class="card">
+                    <div class="card-header">
+                        <h4>Editar Perfil do Usuário</h4>
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="form-group">
+                                <label for="fotoUsuario">Foto do Usuário</label>
+                                <input type="file" class="form-control-file" id="fotoUsuario">
+                            </div>
+                            <div class="form-group">
+                                <label for="nomeUsuario">Nome</label>
+                                <input type="text" class="form-control" id="nomeUsuario"
+                                       placeholder="Digite o nome">
+                            </div>
+                            <div class="form-group">
+                                <label for="empresaUsuario">Empresa</label>
+                                <input type="text" class="form-control" id="empresaUsuario"
+                                       placeholder="Digite o nome da empresa">
+                            </div>
+                            <div class="form-group">
+                                <label for="departamentoUsuario">Departamento</label>
+                                <input type="text" class="form-control" id="departamentoUsuario"
+                                       placeholder="Digite o departamento">
+                            </div>
+                            <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -52,6 +52,17 @@ h2 {
     font-family: "Roboto";
 }
 
+h3 {
+    font-family: "Roboto";
+    font-size: medium;
+}
+
+h4 {
+    font-family: "Roboto";
+    font-size: small;
+    font-weight: lighter;
+}
+
 .login {
     margin-top: 25%;
     margin-left: 10%;
@@ -66,9 +77,31 @@ h2 {
     gap: 0px; /* Adiciona um espaço fixo entre os cartões */
 }
 
+.file-card {
+    text-align: center;
+    background-color: #124f72;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    width: 250px; /* Largura fixa dos cartões */
+    color: white;
+    text-decoration: none;
+}
+
+.file-card img {
+    width: 100%; /* Ajusta a imagem para preencher a largura do cartão */
+    height: 150px; /* Define uma altura fixa para as imagens */
+    object-fit: cover; /* Corta a imagem para caber dentro do cartão */
+}
+
+.file-card h5 {
+    font-size: 15px;
+    margin: 10px 0;
+}
+
 .department-card {
     text-align: center;
-    background-color: dodgerblue;
+    background-color: #124f72;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     border-radius: 10px;
     overflow: hidden;
@@ -88,6 +121,47 @@ h2 {
 }
 
 .table-overflow {
-    max-height:100px;
-    overflow-y:auto;
+    max-height: 100px;
+    overflow-y: auto;
+}
+
+.imageprofile {
+    width: 100px; /* width of container */
+    height: 100px; /* height of container */
+    object-fit: cover;
+    border-radius: 100px;
+    padding: 10px 10px 10px 10px;
+}
+
+.imagelogo {
+    width: 150px; /* width of container */
+    height: 150px; /* height of container */
+    object-fit: contain;
+}
+
+.containernav {
+    padding: 5px 30px 30px 30px;
+}
+
+.navlateral {
+    text-align: center;
+    color: white;
+    align-items: center;
+}
+
+.anavlateral {
+    width: 200px;
+    margin: 5px 0px 0px 5px;
+}
+
+.swiper {
+    width: 90%;
+}
+
+.swiper-slide {
+    width: 90%;
+}
+
+.containercont {
+    padding: 30px 30px 30px 30px;
 }
