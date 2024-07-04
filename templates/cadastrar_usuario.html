@@ -1,0 +1,72 @@
+{% extends "template.html"%}
+{% block content%}
+
+<div class="container-fluid" style="height: 100%">
+    <div class="row" style="height: 100%">
+        <div class="col- containernav navlateral " style="width: 20% ;background-color: #124f72">
+            <img src="static/img/logo.png" alt="" class="imagelogo">
+            <img src="static/img/profile.jpg" class="img-fluid mx-auto d-block imageprofile" alt="...">
+            <h3>Olá, {{ session.name }}!</h3>
+            <h4>Empresa: {{ session.empresa }}</h4>
+            <h4>Departamento: {{ session.departamento }}</h4>
+            <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
+                <a class="btn btn-primary anavlateral" href="/home" role="button">Início</a>
+                <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
+                <a class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" href="/logout" role="button">Sair</a>
+            </div>
+        </div>
+        <div class="col-sm" style="width: 80%; height: 100%">
+            <div style="margin: 10px 10px 10px 10px; background-color: #124f72; border-radius: 20px; height: 95%">
+                <div style="background-color: #06263a; border: black; color: white; border-top-left-radius: 20px; border-top-right-radius: 20px">
+                    <h3 style="font-size: 20px; padding: 10px 0px 10px 50px">Cadastrar novo usuário</h3>
+                </div>
+                <form action="{{url_for('CadastrarUser')}}" method="POST">
+                    <div class="row">
+                        <div class="inputformuser">
+                            <label style="color: white">Nome Completo</label>
+                            <input class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="username">
+                        </div>
+                        <div class="inputformuser">
+                            <label style="color: white">Email</label>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="email">
+                        </div>
+                        <div class="inputformuser">
+                            <label style="color: white">Senha</label>
+                            <input type="password" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="password">
+                        </div>
+                        <div class="inputformuser">
+                            <label style="color: white">Empresa</label>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="company">
+                        </div>
+                        <div class="inputformuser">
+                            <label style="color: white">Departamento</label>
+                            <input type="text" class="form-control" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="departament">
+                        </div>
+                        <div class="inputformuser" style="width: 700px">
+                            <select class="form-select" name="role">
+                                <option selected>Nível de usuário</option>
+                                <option value="1">Derpartamento</option>
+                                <option value="2">Gerente de derpartamento</option>
+                                <option value="3">Gestor</option>
+                                <option value="4">Administrador</option>
+                            </select>
+                        </div>
+                        <div class="inputformuser" style="margin-top: 80px">
+                            <button class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" type="submit">Salvar</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{%endblock%}

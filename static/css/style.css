@@ -165,3 +165,12 @@ h4 {
 .containercont {
     padding: 30px 30px 30px 30px;
 }
+
+.inputformuser {
+    padding: 10px 10px 0px 50px;
+}
+
+.textformuser {
+    font-size: 15px;
+    color: white;
+}
