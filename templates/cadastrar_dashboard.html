@@ -1,0 +1,113 @@
+{% extends "template.html"%}
+{% block content%}
+
+<div class="container-fluid" style="height: 100%" xmlns="http://www.w3.org/1999/html">
+    <div class="row" style="height: 100%">
+
+        <div class="navlateral">
+            <img src="static/img/logo.png" alt="" class="imagelogo">
+            <img src="static/img/profile.jpg" class="img-fluid mx-auto d-block imageprofile" alt="...">
+            <h3>Olá, {{ session.name }}!</h3>
+            <h4>Empresa: {{ session.empresa }}</h4>
+            <h4>Departamento: {{ session.departamento }}</h4>
+            <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
+                <a class="btn btn-primary anavlateral" href="/dashboard" role="button">Início</a>
+                <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
+                <a class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" href="/logout" role="button">Sair</a>
+            </div>
+        </div>
+
+        <div class="divform">
+            <div class="titleform">
+                <div class="titlebutton">
+                    <a href="/dashboard">
+                        <i class="bi bi-arrow-bar-left" style="font-size: 32px; color: white"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="form-and-users">
+                <div class="backgroundform">
+                    <div style="padding: 50px 10px 10px 10px">
+                        <form action="{{url_for('CadastrarDashboard')}}" method="POST">
+                            <div>
+                                <h3>Informações dashboard</h3>
+                                <div class="inputformuser">
+                                    <label>Título</label>
+                                    <input class="form-control inputformuser" aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-default"
+                                           name="title" required>
+                                </div>
+                                <div class="inputformuser">
+                                    <label>Link</label>
+                                    <input type="text" class="form-control inputformuser"
+                                           aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-default"
+                                           name="link" required>
+                                </div>
+                                <div class="inputformuser">
+                                    <label>Imagem</label>
+                                    <input type="file" class="form-control inputformuser"
+                                           aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-default" name="img" required>
+                                </div>
+                                <h3 style="margin-top: 25px">Informações corporativas</h3>
+                                <div class="inputformuser">
+                                    <label>Empresa</label>
+                                    <input type="text" class="form-control inputformuser"
+                                           aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-default" name="company" value="{% if session.role != 'Administrador' %} {{ session.empresa }} {% endif %}" readonly required>
+                                </div>
+                                <div class="inputformuser">
+                                    <label>Departamento</label>
+                                    <input type="text" class="form-control inputformuser"
+                                           aria-label="Sizing example input"
+                                           aria-describedby="inputGroup-sizing-default" name="department" value="{% if session['role' != 'Gestor' or 'Administrador'] %} {{ session.departamento }} {% endif %}" {% if session['role' != 'Gestor' or 'Administrador'] %} {{readonly}} {% endif %} required>
+                                </div>
+                            </div>
+                            <div class="inputformuser" style="margin-top: 80px; ">
+
+                            </div>
+                            <div style="width: 100%; text-align: center">
+                                <button class="mt-auto p-2 bd-highlight btn btn-primary anavlateral" style="width: 150px" type="reset">
+                                    Limpar
+                                </button>
+                                <button class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" style="width: 150px" type="submit">
+                                    Cadastrar
+                                </button>
+                            </div>
+                    </div>
+                </div>
+                <div class="listusers"">
+                    <div style="padding: 60px 20px 20px 20px">
+                        <h3>Usuários disponíveis</h3>
+                        <table class="table table-sm">
+                            <thead>
+                            <tr style="color: white; background: none; border: solid 1px white">
+                                <th scope="col">#</th>
+                                <th scope="col">Nome</th>
+                                <th scope="col">Empresa</th>
+                                <th scope="col">Departamento</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for usuario in usuarios %}
+                            <tr>
+                                <td><input type="checkbox" name="usuario" value="{{ usuario.idusers }}" style="width: 20px"></td>
+                                <td>{{ usuario.username }}</td>
+                                <td>{{ usuario.company }}</td>
+                                <td>{{ usuario.departament }}</td>
+                            </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    {%endblock%}

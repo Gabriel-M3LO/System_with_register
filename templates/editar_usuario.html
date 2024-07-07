@@ -5,8 +5,8 @@
     <div class="row" style="height: 100%">
 
         <div class="navlateral">
-            <img src="static/img/logo.png" alt="" class="imagelogo">
-            <img src="static/img/profile.jpg" class="img-fluid mx-auto d-block imageprofile" alt="...">
+            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="" class="imagelogo">
+            <img src="{{ url_for('static', filename='img/profile.jpg') }}" class="img-fluid mx-auto d-block imageprofile" alt="...">
             <h3>Olá, {{ session.name }}!</h3>
             <h4>Empresa: {{ session.empresa }}</h4>
             <h4>Departamento: {{ session.departamento }}</h4>
@@ -26,34 +26,29 @@
                 </div>
             </div>
             <div class="backgroundform"">
-                <form action="{{url_for('CadastrarUser')}}" method="POST" style="margin-top: 50px">
+                <form action="{{ url_for('editar_usuario', id=usuario[0]) }}" method="POST" style="margin-top: 50px">
                     <div>
                         <h3>Informações pessoais</h3>
                         <div class="inputformuser">
                             <label>Nome Completo</label>
                             <input class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="username" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="username" value="{{ usuario[6] }}"  required>
                         </div>
                         <div class="inputformuser">
                             <label>Email</label>
                             <input type="text" class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="email" readonly required>
-                        </div>
-                        <div class="inputformuser">
-                            <label>Senha</label>
-                            <input type="password" class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="password" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="email" value="{{ usuario[5] }}"  required>
                         </div>
                         <h3 style="margin-top: 25px">Informações corporativas</h3>
                         <div class="inputformuser">
                             <label>Empresa</label>
                             <input type="text" value="{% if session['role'] != 'Administrador' %}{{ session.empresa }}{% endif %} " class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="company" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="company" value="{{ usuario[4] }}" readonly required>
                         </div>
                         <div class="inputformuser">
                             <label>Departamento</label>
                             <input type="text" value="{% if session['role'] != 'Administrador' or 'Gestor' %}{{ session.departamento }}{% endif %}" class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="departament" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="departament" value="{{ usuario[5] }}" readonly required>
                         </div>
                         <div class="inputformuser" style="width: 300px; margin-top: 10px">
                             <select class="form-select" name="role">

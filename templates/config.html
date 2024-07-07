@@ -10,49 +10,51 @@
             <h4>Empresa: {{ session.empresa }}</h4>
             <h4>Departamento: {{ session.departamento }}</h4>
             <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
-                <a class="btn btn-primary anavlateral" href="/home" role="button">Início</a>
+                <a class="btn btn-primary anavlateral" href="/dashboard" role="button">Início</a>
+                {% if session['role'] == 'Administrador' or 'Gerente de departamento' or gerente%}
                 <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
+                {% endif %}
                 <a class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" href="/logout" role="button">Sair</a>
             </div>
         </div>
-        <div class="col- containernav" style="width: 80%; padding: 20px 0px 0px 20px">
-            <div class="col-md-8 offset-md-2">
-                <div class="container mt-5">
-                    <h1 class="mb-4">Adicionar Usuário</h1>
-                    <a href="/CadastrarUser" class="btn btn-primary">
-                        <!-- Ícone de adicionar aqui -->
-                        <i class="bi bi-file-earmark-plus"></i>
-                        Adicionar usuário
-                    </a>
-                    <table class="table table-striped">
-                        <thead class="thead-dark">
-                        <tr>
-                            <th scope="col">ID</th>
-                            <th scope="col">Nome</th>
-                            <th scope="col">Email</th>
-                            <th scope="col">Empresa</th>
-                            <th scope="col">Departamento</th>
-                            <th scope="col">Ações</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {% for usuario in usuarios %}
-                        <tr>
-                            <td>{{ usuario.idusers }}</td>
-                            <td>{{ usuario.username }}</td>
-                            <td>{{ usuario.email }}</td>
-                            <td>{{ usuario.company }}</td>
-                            <td>{{ usuario.departament }}</td>
-                            <td>
-                                <form action="{{ url_for('excluirUsuario', usuario_id=usuario['idusers']) }}"
-                                      method="POST" style="display:inline;">
-                                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                                </form>
-                        </tr>
-                        {% endfor %}
-                        </tbody>
-                    </table>
-                </div>
+        <div style="margin-left:20%; width: 80%; padding: 20px 0px 0px 20px">
+            <div style="padding: 20px 40px 20px 40px">
+                <p style="font-size: 25px; display: inline-block">Adicionar Usuário</p>
+                <a href="/CadastrarUser" class="btn btn-primary" style="display: inline-block; float:right" >
+                    <!-- Ícone de adicionar aqui -->
+                    <i class="bi bi-file-earmark-plus"></i>
+                    Adicionar usuário
+                </a>
+                <table class="table table-striped">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th scope="col">ID</th>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Empresa</th>
+                        <th scope="col">Departamento</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.idusers }}</td>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.company }}</td>
+                        <td>{{ usuario.departament }}</td>
+                        <td>
+                            <form action="{{ url_for('excluirUsuario', usuario_id=usuario['idusers']) }}"
+                                  method="POST" style="display:inline;">
+                                <a href="{{ url_for('editar_usuario', id=usuario.idusers) }}" class="btn btn-warning btn-sm">Editar</a>
+                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                            </form>
+
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
             </div>
         </div>
     </div>
