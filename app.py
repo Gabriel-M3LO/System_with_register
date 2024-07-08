@@ -1,8 +1,15 @@
 import MySQLdb
+import mysql.connector
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 from flask_mysqldb import MySQL
 from flask_session import Session
 import os
+
+cnx = mysql.connector.connect(
+    user='root',
+    password='root',
+    host='127.0.0.1'
+)
 
 app = Flask(__name__)
 app.config.from_object('config.Config')
