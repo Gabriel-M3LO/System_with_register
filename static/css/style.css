@@ -58,6 +58,11 @@ h3 {
     font-size: medium;
 }
 
+label {
+    font-family: "Roboto";
+    font-size: x-small;
+}
+
 h4 {
     font-family: "Roboto";
     font-size: small;

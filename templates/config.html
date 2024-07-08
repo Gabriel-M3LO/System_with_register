@@ -11,7 +11,7 @@
             <h4>Departamento: {{ session.departamento }}</h4>
             <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
                 <a class="btn btn-primary anavlateral" href="/dashboard" role="button">Início</a>
-                {% if session['role'] == 'Administrador' or 'Gerente de departamento' or gerente%}
+                {% if session['role'] == 'Administrador' or 'Gerente de departamento' or 'gerente'%}
                 <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
                 {% endif %}
                 <a class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" href="/logout" role="button">Sair</a>
@@ -33,6 +33,7 @@
                         <th scope="col">Email</th>
                         <th scope="col">Empresa</th>
                         <th scope="col">Departamento</th>
+                        <th scope="col">Nível</th>
                         <th scope="col">Ações</th>
                     </tr>
                     </thead>
@@ -44,6 +45,7 @@
                         <td>{{ usuario.email }}</td>
                         <td>{{ usuario.company }}</td>
                         <td>{{ usuario.departament }}</td>
+                        <td>{{ usuario.role }}</td>
                         <td>
                             <form action="{{ url_for('excluirUsuario', usuario_id=usuario['idusers']) }}"
                                   method="POST" style="display:inline;">

@@ -32,36 +32,35 @@
                         <div class="inputformuser">
                             <label>Nome Completo</label>
                             <input class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="username" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="username" required>
                         </div>
                         <div class="inputformuser">
                             <label>Email</label>
                             <input type="text" class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="email" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="email" required>
                         </div>
                         <div class="inputformuser">
                             <label>Senha</label>
                             <input type="password" class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="password" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="password" required>
                         </div>
                         <h3 style="margin-top: 25px">Informações corporativas</h3>
                         <div class="inputformuser">
                             <label>Empresa</label>
                             <input type="text" value="{% if session['role'] != 'Administrador' %}{{ session.empresa }}{% endif %} " class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="company" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="company" {% if session['role'] != 'Administrador' %} {{ readonly }} {% endif %} required>
                         </div>
                         <div class="inputformuser">
                             <label>Departamento</label>
                             <input type="text" value="{% if session['role'] != 'Administrador' or 'Gestor' %}{{ session.departamento }}{% endif %}" class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="departament" readonly required>
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="departament" {% if session['role'] != 'Administrador' or 'Gerente de departamento' %} {{'readonly'}} {% endif %} required>
                         </div>
                         <div class="inputformuser" style="width: 300px; margin-top: 10px">
                             <select class="form-select" name="role">
-                                <option selected>Nível de usuário</option>
                                 <option value="Derpartamento">Derpartamento</option>
-                                {% if session['role'] == 'Administrador' %}
+                                 {% if session['role'] == 'Administrador' or 'Gestor' %}
                                 <option value="Gerente de departamento">Gerente de departamento</option>
-                                {% if session['role'] == 'Administrador' or 'Gestor' %}
+                                {% if session['role'] == 'Administrador' %}
                                 <option value="Gestor">Gestor</option>
                                 <option value="Administrador">Administrador</option>
                                 {% endif %}
