@@ -1,23 +1,8 @@
-{% extends "template.html"%}
-{% block content%}
+{% extends "template-nab.html" %}
+{% block content %}
 
-<div class="container-fluid" style="height: 100%">
-    <div class="row" style="height: 100%">
-
-        <div class="navlateral">
-            <img src="{{ url_for('static', filename='img/logo.png') }}" alt="" class="imagelogo">
-            <img src="{{ url_for('static', filename='img/profile.jpg') }}"
-                 class="img-fluid mx-auto d-block imageprofile" alt="...">
-            <h3>Olá, {{ session.name }}!</h3>
-            <h4>Empresa: {{ session.empresa }}</h4>
-            <h4>Departamento: {{ session.departamento }}</h4>
-            <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
-                <a class="btn btn-primary anavlateral" href="/dashboard" role="button">Início</a>
-                <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
-                <a class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" href="/logout" role="button">Sair</a>
-            </div>
-        </div>
-
+<div class="container-fluid" style="height: 100%;">
+    <div class="row" style="height: 100%;">
         <div class="divform">
             <div class="titleform">
                 <div class="titlebutton">
@@ -26,60 +11,62 @@
                     </a>
                 </div>
             </div>
-            <div class="backgroundform"
-            ">
-            <form action="{{ url_for('editar_usuario', id=usuario[0]) }}" method="POST" style="margin-top: 50px">
-                <div>
-                    <h3>Informações pessoais</h3>
-                    <div class="inputformuser">
-                        <label>Nome Completo</label>
-                        <input class="form-control inputformuser" aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default" style="width: 700px" name="username"
-                               value="{{ usuario[6] }}" required>
+            <div class="backgroundform">
+                <form action="{{ url_for('editar_usuario', id=usuario.idusers) }}" method="POST" style="margin-top: 50px;">
+                    <div>
+                        <h3>Informações pessoais</h3>
+                        <div class="inputformuser">
+                            <label>Nome Completo</label>
+                            <input class="form-control inputformuser" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="username"
+                                   value="{{ usuario.username }}" required>
+                        </div>
+                        <div class="inputformuser">
+                            <label>Email</label>
+                            <input type="email" class="form-control inputformuser" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="email"
+                                   value="{{ usuario.email }}" required>
+                        </div>
+                        <h3 style="margin-top: 25px">Informações corporativas</h3>
+                        <div class="inputformuser">
+                            <label>Empresa</label>
+                            <input type="text"
+                                   value="{{ usuario.company }}"
+                                   class="form-control inputformuser" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="company"
+                                   {% if session['role'] != 'Administrador' %} readonly {% endif %} required>
+                        </div>
+                        <div class="inputformuser">
+                            <label>Departamento</label>
+                            <input type="text"
+                                   value="{{ usuario.departament }}"
+                                   class="form-control inputformuser" aria-label="Sizing example input"
+                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="departament"
+                                   {% if session['role'] != 'Administrador' and session['role'] != 'Gerente de departamento' %} readonly {% endif %}>
+                        </div>
+                        <div class="inputformuser" style="width: 300px; margin-top: 10px;">
+                            <label>Nível</label>
+                            <select class="form-select" name="role">
+                                <option value="Departamento" {% if usuario.role == 'Departamento' %}selected{% endif %}>Departamento</option>
+                                {% if session['role'] == 'Administrador' %}
+                                <option value="Gerente de departamento" {% if usuario.role == 'Gerente de departamento' %}selected{% endif %}>Gerente de departamento</option>
+                                <option value="Gestor" {% if usuario.role == 'Gestor' %}selected{% endif %}>Gestor</option>
+                                <option value="Administrador" {% if usuario.role == 'Administrador' %}selected{% endif %}>Administrador</option>
+                                {% endif %}
+                            </select>
+                        </div>
+                        <div class="inputformuser" style="margin-top: 80px;">
+                            <button class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" type="submit">Atualizar cadastro</button>
+                        </div>
                     </div>
-                    <div class="inputformuser">
-                        <label>Email</label>
-                        <input type="text" class="form-control inputformuser" aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default" style="width: 700px" name="email"
-                               value="{{ usuario[5] }}" required>
-                    </div>
-                    <h3 style="margin-top: 25px">Informações corporativas</h3>
-                    <div class="inputformuser">
-                        <label>Empresa</label>
-                        <input type="text"
-                               value="{{ usuario[3] }}"
-                               class="form-control inputformuser" aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default" style="width: 700px" name="company" {% if session['role'] != 'Administrador' %} {{ 'readonly' }} {% endif %} required>
-                    </div>
-                    <div class="inputformuser">
-                        <label>Departamento</label>
-                        <input type="text"
-                               value="{{ usuario[4] }}"
-                               class="form-control inputformuser" aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default" style="width: 700px" name="departament" {% if session['role'] != 'Administrador' and session['role'] != 'Gerente de departamento' %} {{ 'readonly' }} {% endif %}
-                    </div>
-                    <div class="inputformuser" style="width: 300px; margin-top: 10px">
-                        <select class="form-select" name="role">
-                            <option value="Derpartamento">Derpartamento</option>
-                            {% if session['role'] == 'Administrador' %}
-                            <option value="Gerente de departamento">Gerente de departamento</option>
-                            {% if session['role'] == 'Administrador' or 'Gestor' %}
-                            <option value="Gestor">Gestor</option>
-                            <option value="Administrador">Administrador</option>
-                            {% endif %}
-                            {% endif %}
-                        </select>
-                    </div>
-                    <div class="inputformuser" style="margin-top: 80px">
-                        <button class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" type="submit">Atualizar cadastro
-                        </button>
-                    </div>
-                </div>
-            </form>
+                </form>
+            </div>
         </div>
     </div>
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</div>
 
-    {%endblock%}
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock %}

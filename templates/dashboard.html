@@ -1,23 +1,9 @@
-{% extends "template.html"%}
+{% extends "template-navb.html"%}
 {% block content%}
 
 <div class="container-fluid" style="height: 100%">
     <div class="row" style="height: 100%">
-        <div class="col- containernav navlateral " style="width: 20% ;background-color: #124f72">
-            <img src="static/img/logo.png" alt="" class="imagelogo">
-            <img src="static/img/profile.jpg" class="img-fluid mx-auto d-block imageprofile" alt="...">
-            <h3>Olá, {{ session.name }}!</h3>
-            <h4>Empresa: {{ session.empresa }}</h4>
-            <h4>Departamento: {{ session.departamento }}</h4>
-            <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
-                <a class="btn btn-primary anavlateral" href="/dashboard" role="button">Início</a>
-                {% if session['role'] == 'Administrador' or 'Gerente de departamento' or gerente%}
-                <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
-                {% endif %}
-                <a class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" href="/logout" role="button">Sair</a>
-            </div>
-        </div>
-        <div class="col- containercont" style="width: 80%">
+        <div class="col- containercont" style="width: 100%">
             <div style="padding: 10px 50px 0px 50px">
                 {% if session['role'] != 'Departamento' %}
                 <a class="btn btn-primary" style="display: inline-block; float:right" href="/CadastrarDashboard"> <i class="bi bi-file-earmark-plus "></i>Adicionar novo arquivo
@@ -31,9 +17,9 @@
                 <div class="swiper mySwiper department-container">
                     <div class="swiper-wrapper">
                         {% for arquivo in arquivos %}
-                        <a href="http://{{ arquivo[1] }}" class="swiper-slide file-card">
-                            <img src="static/img/dash/{{ arquivo[2] }}" alt="">
-                            <h5>{{ arquivo[0] }}</h5>
+                        <a href="http://{{ arquivo[2] }}" class="swiper-slide file-card">
+                            <img src="static/dash/{{arquivo[3]}}" alt="">
+                            <h5>{{ arquivo[1] }}</h5>
                         </a>
                         {% endfor %}
                     </div>
@@ -53,7 +39,7 @@
 <!-- Initialize Swiper -->
 <script>
     var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 3,
+        slidesPerView: 4,
         spaceBetween: 30,
         slidesPerGroup: 3,
         loop: true,

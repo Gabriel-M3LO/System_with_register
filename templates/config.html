@@ -1,68 +1,53 @@
-{% extends "template.html"%}
-{% block content%}
+{% extends "template-navb.html" %}
+{% block content %}
 
-<div class="container-fluid" style="height: 100%">
-    <div class="row" style="height: 100%">
-        <div class="col- containernav navlateral " style="width: 20% ;background-color: #124f72">
-            <img src="static/img/logo.png" alt="" class="imagelogo">
-            <img src="static/img/profile.jpg" class="img-fluid mx-auto d-block imageprofile" alt="...">
-            <h3>Olá, {{ session.name }}!</h3>
-            <h4>Empresa: {{ session.empresa }}</h4>
-            <h4>Departamento: {{ session.departamento }}</h4>
-            <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
-                <a class="btn btn-primary anavlateral" href="/dashboard" role="button">Início</a>
-                {% if session['role'] == 'Administrador' or 'Gerente de departamento' or 'gerente'%}
-                <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
-                {% endif %}
-                <a class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" href="/logout" role="button">Sair</a>
-            </div>
-        </div>
-        <div style="margin-left:20%; width: 80%; padding: 20px 0px 0px 20px">
-            <div style="padding: 20px 40px 20px 40px">
-                <p style="font-size: 25px; display: inline-block">Adicionar Usuário</p>
-                <a href="/CadastrarUser" class="btn btn-primary" style="display: inline-block; float:right" >
-                    <!-- Ícone de adicionar aqui -->
+<div class="container-fluid" style="height: 100%;">
+    <div class="row" style="height: 100%;">
+        <div style="padding: 20px 0px 0px 20px;">
+            <div style="padding: 20px 40px 20px 40px;">
+                <p style="font-size: 25px; display: inline-block;">Adicionar Usuário</p>
+                <a href="/CadastrarUser" class="btn btn-primary" style="display: inline-block; float:right;">
                     <i class="bi bi-file-earmark-plus"></i>
                     Adicionar usuário
                 </a>
                 <table class="table table-striped">
                     <thead class="thead-dark">
-                    <tr>
-                        <th scope="col">ID</th>
-                        <th scope="col">Nome</th>
-                        <th scope="col">Email</th>
-                        <th scope="col">Empresa</th>
-                        <th scope="col">Departamento</th>
-                        <th scope="col">Nível</th>
-                        <th scope="col">Ações</th>
-                    </tr>
+                        <tr>
+                            <th scope="col">ID</th>
+                            <th scope="col">Nome</th>
+                            <th scope="col">Email</th>
+                            <th scope="col">Empresa</th>
+                            <th scope="col">Departamento</th>
+                            <th scope="col">Nível</th>
+                            <th scope="col">Ações</th>
+                        </tr>
                     </thead>
                     <tbody>
-                    {% for usuario in usuarios %}
-                    <tr>
-                        <td>{{ usuario.idusers }}</td>
-                        <td>{{ usuario.username }}</td>
-                        <td>{{ usuario.email }}</td>
-                        <td>{{ usuario.company }}</td>
-                        <td>{{ usuario.departament }}</td>
-                        <td>{{ usuario.role }}</td>
-                        <td>
-                            <form action="{{ url_for('excluirUsuario', usuario_id=usuario['idusers']) }}"
-                                  method="POST" style="display:inline;">
+                        {% for usuario in usuarios %}
+                        <tr>
+                            <td>{{ usuario.idusers }}</td>
+                            <td>{{ usuario.username }}</td>
+                            <td>{{ usuario.email }}</td>
+                            <td>{{ usuario.company }}</td>
+                            <td>{{ usuario.departament }}</td>
+                            <td>{{ usuario.role }}</td>
+                            <td>
                                 <a href="{{ url_for('editar_usuario', id=usuario.idusers) }}" class="btn btn-warning btn-sm">Editar</a>
-                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                            </form>
-
-                    </tr>
-                    {% endfor %}
+                                <form action="{{ url_for('excluirUsuario', usuario_id=usuario.idusers) }}" method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
-{%endblock%}
+{% endblock %}

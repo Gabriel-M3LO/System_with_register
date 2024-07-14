@@ -1,0 +1,19 @@
+{% extends "template-navb.html" %}
+{% block content %}
+
+<div class="container mt-5">
+    <h1>Gerenciar Dashboards para {{ user.username }}</h1>
+    <form action="{{ url_for('user_dashboards', user_id=user.idusers) }}" method="POST">
+        <div class="form-group">
+            <label for="dashboards">Dashboards Disponíveis</label>
+            <select multiple class="form-control" id="dashboards" name="dashboards">
+                {% for dashboard in dashboards %}
+                <option value="{{ dashboard.idFiles }}" {% if dashboard.idFiles in user_dashboard_ids %}selected{% endif %}>{{ dashboard.title }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>
+    </form>
+</div>
+
+{% endblock %}

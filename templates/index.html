@@ -1,45 +1,82 @@
-{% extends "template.html"%}
-{% block content%}
-<div>
-    <div class="d-flex justify-content-between">
-        <div style="background-image: url('/static/img/bg.jpg'); width: 65%; height: 100vh">
-            <div class="logintext">
-                <h1>Gestão Remota</h1>
-                <h2 style="font-size: 20px; margin-top: 2px">Bem-vindo!</h2>
-            </div>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ titulo }}</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='css/bootstrap.css')}}">
+    <link rel="stylesheet" href="{{url_for('static', filename= 'css/style.css')}}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css"/>
+</head>
+
+<style>
+
+    .loginbackground {
+    background-image: url("static/img/background_login.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100%;
+    }
+
+    .LoginContainer {
+        background-color: rgba(2, 33, 80, 0.82);
+        width: 30%;
+        height: 60%;
+        position: absolute;
+        left: 50%;
+        top: 50%;
+        transform: translate(-50%, -50%);
+        padding: 20px 20px 20px 20px;
+        border-radius: 20px;
+    }
+
+    .loginLogo {
+        width: 50%;
+        height: 12%;
+    }
+
+    .LoginLogoContainer {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+</style>
+<body>
+<div class="loginbackground">
+    <div class="LoginContainer">
+        <div class="LoginLogoContainer">
+            <img  class="loginLogo" src="{{url_for('static', filename='img/logo.png')}}">
         </div>
         <div>
-            <div class="lo" style="margin-right: 100px; margin-top: 50px">
-                <div class="full-height-div d-flex justify-content-center align-items-center">
-                    <img src="img/logo.png" style="width: 30%; height: auto%; margin-top: 20%" alt="">
-
-                    {% with messages = get_flashed_messages() %}
-                    {% if messages %}
-                    <ul id="messages" class="list-unstyled">
-                        {% for message in messages %}
-                        <li class="alert alert-success">{{ message }}</li>
-                        {% endfor %}
-                    </ul>
-                    {% endif %}
-                    {% endwith %}
-
-                </div>
-                <form action="/" method="POST" style="margin-top: 5%">
-                    <h2 style="text-align: center; color: #b8b0b0">LOGIN</h2>
-                    <div style="text-align: center">
-                        <input type="email" name="email" placeholder="email" style="margin-top: 10px"
-                               required> <br>
-                        <input type="password" name="password" placeholder="password" style="margin-top: 5px"
-                               required>
-                        <br>
-                    </div>
-                    <div style="margin-top: 15px; text-align: center">
-                        <button type="submit" class="btn btn-primary" style="width: 350px" ">Login</button>
-                    </div>
-                </form>
-                <div class="d-flex justify-content-left" style="margin-top: 15px"></div>
-            </div>
+            {% with messages = get_flashed_messages() %}
+            {% if messages %}
+            <ul id="messages" class="list-unstyled">
+                {% for message in messages %}
+                <li class="alert alert-success">{{ message }}</li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+            {% endwith %}
         </div>
+        <form action="/autenticar" method="POST" style="margin-top: 5%">
+
+            <h2 style="text-align: center; color: #b8b0b0">LOGIN</h2>
+            <div style="text-align: center">
+                <input type="email" name="email" placeholder="email" style="margin-top: 10px"
+                       required> <br>
+                <input type="password" name="password" placeholder="password" style="margin-top: 5px"
+                       required>
+                <br>
+            </div>
+            <div style="margin-top: 15px; text-align: center">
+                <button type="submit" class="btn btn-primary" style="width: 350px"
+                ">Login</button>
+            </div>
+        </form>
     </div>
 </div>
-{%endblock%}
+</body>
+</html>
