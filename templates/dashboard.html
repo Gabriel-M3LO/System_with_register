@@ -1,36 +1,49 @@
 {% extends "template-navb.html"%}
 {% block content%}
 
-<div class="container-fluid" style="height: 100%">
-    <div class="row" style="height: 100%">
-        <div class="col- containercont" style="width: 100%">
-            <div style="padding: 10px 50px 0px 50px">
-                {% if session['role'] != 'Departamento' %}
-                <a class="btn btn-primary" style="display: inline-block; float:right" href="/CadastrarDashboard"> <i class="bi bi-file-earmark-plus "></i>Adicionar novo arquivo
+<style>
+    .background_swipper {
+        background-color: #152242;
+        padding: 10px 10px 20px 10px;
+        margin-top: 10px;
+    }
+    .swipper_title {
+        text-align: center;
+        color: white;
+        border-bottom: solid white 1px;
+    }
+</style>
+
+
+<div style="width: 100%">
+    <div style="padding: 10px 50px 0px 50px">
+        {% if session['role'] != 'Departamento' %}
+        <a class="btn btn-primary" style="display: inline-block; float:right" href="/CadastrarDashboard"> <i
+                class="bi bi-file-earmark-plus "></i>Adicionar novo arquivo
+        </a>
+        {% endif %}
+        <p style="font-size: 25px; display: inline-block">Departamentos disponíveis</p>
+    </div>
+    {% for departamento, arquivos in arquivos_por_departamento.items() %}
+    <div class="department-section background_swipper">
+        <div class="swipper_title">
+            <h2 style="margin-left: 50px">Departamento {{ departamento }}</h2>
+        </div>
+        <div class="swiper mySwiper department-container">
+            <div class="swiper-wrapper" style="margin-top: 20px">
+                {% for arquivo in arquivos %}
+                <a href="http://{{ arquivo.link }}" class="swiper-slide file-card">
+                    <img src="static/dash/{{arquivo.fileImage}}" alt="">
+                    <h5>{{ arquivo.title }}</h5>
                 </a>
-                {% endif %}
-                <p style="font-size: 25px; display: inline-block">Departamentos disponíveis</p>
+                {% endfor %}
             </div>
-            {% for departamento, arquivos in arquivos_por_departamento.items() %}
-            <div class="department-section" style="margin-top: 20px">
-                <h2 style="margin-left: 50px">Departamento {{ departamento }}</h2>
-                <div class="swiper mySwiper department-container">
-                    <div class="swiper-wrapper">
-                        {% for arquivo in arquivos %}
-                        <a href="http://{{ arquivo[2] }}" class="swiper-slide file-card">
-                            <img src="static/dash/{{arquivo[3]}}" alt="">
-                            <h5>{{ arquivo[1] }}</h5>
-                        </a>
-                        {% endfor %}
-                    </div>
-                    <div class="swiper-button-next"></div>
-                    <div class="swiper-button-prev"></div>
-                    <div class="swiper-pagination"></div>
-                </div>
-            </div>
-            {% endfor %}
+            <div class="swiper-button-next"></div>
+            <div class="swiper-button-prev"></div>
+            <div class="swiper-pagination"></div>
         </div>
     </div>
+    {% endfor %}
 </div>
 <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>

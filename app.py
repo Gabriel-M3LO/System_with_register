@@ -1,10 +1,23 @@
+import mail
 from flask import Flask, render_template, request, redirect, session, url_for, flash
 from flask_sqlalchemy import SQLAlchemy
+from flask_mail import Mail, Message
 import os
 
 app = Flask(__name__)
 app.secret_key = 'root'
 
+
+app.config['SQLALCHEMY_DATABASE_URI'] = \
+    '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
+        SGBD='mysql+mysqlconnector',
+        usuario='Gabrielm3l0',
+        senha='nikgeo369',
+        servidor='Gabrielm3l0.mysql.pythonanywhere-services.com',
+        database='Gabrielm3l0$gestao_correta'
+    )
+
+"""
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGBD='mysql+mysqlconnector',
@@ -13,9 +26,18 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
         servidor='localhost',
         database='gestao_correta'
     )
+"""
+
+app.config['MAIL_SERVER'] = 'smtp-relay.gmail.com'
+app.config['MAIL_PORT'] = 4
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'genoreply4@gmail.com'
+app.config['MAIL_PASSWORD'] = 'tebn zvkw jcmq jedb'
+app.config['MAIL_DEFAULT_SENDER'] = 'genoreply4@gmail.com'
+
 
 db = SQLAlchemy(app)
-
+mail = Mail(app)
 
 class users(db.Model):
     idusers = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -41,6 +63,12 @@ class files(db.Model):
     def __repr__(self):
         return '<Arquivo {}>'.format(self.title)
 
+# Tabela de associação
+files_users = db.Table('filesusers',
+    db.Column('idfiles', db.Integer, db.ForeignKey('files.idFiles'), primary_key=True),
+    db.Column('idusers', db.Integer, db.ForeignKey('users.idusers'), primary_key=True)
+)
+
 @app.route('/', methods=['GET', 'POST'])
 def index():
     return render_template('index.html')
@@ -60,13 +88,30 @@ def autenticar():
 
     return render_template('index.html')
 
+@app.route('/RecuperarSenha', methods=['GET', 'POST'])
+def RecuperarSenha():
+    if request.method == 'POST':
+        try:
+            msg = Message(
+                'Hello',
+                sender='genoreply4@gmail.com',
+                recipients=['gabrielzulifi@gmail.com']
+            )
+            msg.body = 'Hello Flask message sent from Flask-Mail'
+            mail.send(msg)
+            flash('E-mail enviado com sucesso!', 'success')
+        except Exception as e:
+            flash(f'Ocorreu um erro ao enviar o e-mail: {str(e)}', 'danger')
+        return render_template('RecuperarSenha.html')
+
+    return render_template('RecuperarSenha.html')
 
 @app.route('/dashboard')
 def dashboard():
     if 'usuario_logado' in session:
-        arquivos = []
-        if session['role'] == 'Adm':
+        if session['role'] == 'Administrador':
             arquivos = files.query.all()
+            print(arquivos)
         elif session['role'] == 'Gerente de departamento':
             arquivos = files.query.filter_by(fileDepartment=session['departament'], fileCompany=session['company']).all()
         elif session['role'] == 'Gestor':
@@ -74,7 +119,7 @@ def dashboard():
             arquivos = db.session.query(files).join(filesusers).filter(filesusers.idusers == user_id).all()
         else:
             user_id = users.query.filter_by(username=session['usuario_logado']).first().idusers
-            arquivos = db.session.query(files).join(filesusers).filter(filesusers.idusers == user_id).all()
+            arquivos = db.session.query(files).join(files_users).join(users).filter(files_users.c.idusers == user_id).all()
 
         arquivos_por_departamento = {}
         for arquivo in arquivos:
@@ -170,18 +215,17 @@ def config():
     # Definindo 'usuarios' como lista vazia como padrão
     usuarios = []
 
-    if session['role'] == 'Adm':
+    if session['role'] == 'Administrador':
         usuarios = users.query.all()
     elif session['role'] == 'Gestor':
         usuarios = users.query.filter_by(company=session['company']).all()
     elif session['role'] == 'Gerente de departamento':
         usuarios = users.query.filter_by(company=session['company'], departament=session['departament']).all()
 
-    # Adicionando prints para debug
-    print("Usuários encontrados:", usuarios)
-    print("Sessão:", session)
+    # Buscar dashboards
+    dashboards = files.query.all()
 
-    return render_template('config.html', arquivos=arquivos, usuarios=usuarios, titulo='config')
+    return render_template('config.html',dashboards=dashboards, arquivos=arquivos, usuarios=usuarios, titulo='config')
 
 
 @app.route('/CadastrarUser', methods=['GET', 'POST'])
@@ -237,7 +281,7 @@ def CadastrarDashboard():
         usuarios = users.query.filter_by(departament=session['departament'], company=session['company']).all()
     elif session['role'] == 'Gestor':
         usuarios = users.query.filter_by(company=session['company']).all()
-    elif session['role'] == 'Adm':
+    elif session['role'] == 'Administrador':
         usuarios = users.query.all()
 
     return render_template('cadastrar_dashboard.html', titulo='cadastrarDashboard', usuarios=usuarios)
@@ -272,6 +316,58 @@ def editar_usuario(id):
 
     return render_template('editar_usuario.html', usuario=usuario)
 
+
+@app.route('/editar_dashboard/<int:id>', methods=['GET', 'POST'])
+def editar_dashboard(id):
+    dashboard = files.query.get_or_404(id)
+
+    if request.method == 'POST':
+        dashboard.title = request.form['title']
+        dashboard.link = request.form['link']
+        dashboard.fileImage = request.form['fileImage']
+        dashboard.fileCompany = request.form['fileCompany']
+        dashboard.fileDepartment = request.form['fileDepartment']
+
+        selected_users = request.form.getlist('usuarios')
+
+        # Atualizar os usuários associados ao dashboard
+        current_users = db.session.query(files_users).filter_by(idfiles=id).all()
+        current_user_ids = [user.idusers for user in current_users]
+
+        for user_id in selected_users:
+            if int(user_id) not in current_user_ids:
+                new_access = files_users.insert().values(idfiles=id, idusers=int(user_id))
+                db.session.execute(new_access)
+
+        for user in current_users:
+            if str(user.idusers) not in selected_users:
+                delete_access = files_users.delete().where(
+                    files_users.c.idfiles == id,
+                    files_users.c.idusers == user.idusers
+                )
+                db.session.execute(delete_access)
+
+        db.session.commit()
+        return redirect(url_for('config'))
+
+    usuarios = users.query.all()
+    usuarios_selecionados = [user.idusers for user in db.session.query(files_users).filter_by(idfiles=id).all()]
+
+    return render_template('editar_dashboard.html', dashboard=dashboard, usuarios=usuarios,
+                           usuarios_selecionados=usuarios_selecionados)
+
+
+@app.route('/excluir_dashboard/<int:dashboard_id>', methods=['POST'])
+def excluir_dashboard(dashboard_id):
+    dashboard = files.query.get_or_404(dashboard_id)
+
+    # Excluir associações na tabela files_users
+    db.session.query(files_users).filter(files_users.c.idfiles == dashboard_id).delete()
+
+    # Agora pode excluir o dashboard
+    db.session.delete(dashboard)
+    db.session.commit()
+    return redirect(url_for('config'))
 
 
 if __name__ == '__main__':

@@ -39,8 +39,8 @@
                         <input type="text" class="form-control inputformuser"
                                aria-label="Sizing example input"
                                aria-describedby="inputGroup-sizing-default" name="company"
-                               value="{% if session.role != 'Administrador' %} {{ session.empresa }} {% endif %}"
-                               readonly required>
+                               value="{% if session.role != 'Administrador' %} {{session.empresa}} {% endif %}"
+                               {% if session.role != 'Administrador' %} {{'readonly'}} {% endif %}required>
                     </div>
                     <div class="inputformuser">
                         <label>Departamento</label>

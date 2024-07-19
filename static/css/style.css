@@ -119,36 +119,6 @@ h4 {
     overflow-y: auto;
 }
 
-.imageprofile {
-    width: 100px; /* width of container */
-    height: 100px; /* height of container */
-    object-fit: cover;
-    border-radius: 100px;
-    padding: 10px 10px 10px 10px;
-}
-
-.imagelogo {
-    width: 150px; /* width of container */
-    height: 150px; /* height of container */
-    object-fit: contain;
-}
-
-.navlateral {
-    text-align: center;
-    color: white;
-    align-items: center;
-    background-color: #124f72;
-    width: 20%;
-    display: inline-block;
-    height: 100%;
-    position: fixed;
-}
-
-.anavlateral {
-    width: 200px;
-    margin: 5px 0px 0px 5px;
-}
-
 .inputformuser {
     width: 500px;
     padding-left: 0px;

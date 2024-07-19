@@ -61,16 +61,12 @@
             {% endif %}
             {% endwith %}
         </div>
-        <form action="/autenticar" method="POST" style="margin-top: 5%">
+        <form action="/verificar_codigo" method="POST" style="margin-top: 5%">
 
             <h2 style="text-align: center; color: #b8b0b0">LOGIN</h2>
             <div style="text-align: center">
-                <input type="email" name="email" placeholder="email" style="margin-top: 10px"
-                       required> <br>
-                <input type="password" name="password" placeholder="password" style="margin-top: 5px"
+                <input type="text" name="email" placeholder="email" style="margin-top: 10px"
                        required>
-                <br>
-                <a href="/RecuperarSenha">Esqueci a senha</a>
                 <br>
             </div>
             <div style="margin-top: 15px; text-align: center">
