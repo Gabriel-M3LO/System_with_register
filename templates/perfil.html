@@ -1,0 +1,43 @@
+{% extends "template-navb.html" %}
+{% block content %}
+
+<style>
+    input {
+        width: 500px;
+    }
+    button{
+        width: 500px;
+    }
+</style>
+
+<div style="height: 100%;">
+    <div class="row" style="height: 100%;">
+        <div class="divform">
+            <div class="titleform">
+                <div class="titlebutton">
+                    <a href="/config">
+                        <i class="bi bi-arrow-bar-left" style="font-size: 32px; color: white"></i>
+                    </a>
+                </div>
+            </div>
+            <div style="margin-top: 5%; margin-left: 10px">
+                <form action="/perfil">
+                    <div style="margin-top: 15px">
+                    <h2>Alterar senha</h2>
+                        <input type="password" name="SenhaAtual" placeholder="senha atual"> <br> <br>
+                        <input type="password" name="NovaSenha" placeholder="Nova senha"> <br>
+                        <input type="password" name="NovaSenhaNovamente" placeholder="digite novamente">
+                    </div>
+                    <br>
+                    <button class="btn btn-primary p-2 mt-auto" type="submit">Enviar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+{% endblock %}

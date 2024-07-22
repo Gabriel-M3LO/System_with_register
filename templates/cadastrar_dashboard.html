@@ -31,7 +31,7 @@
                         <label>Imagem</label>
                         <input type="file" class="form-control inputformuser"
                                aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default" name="img" required>
+                               aria-describedby="inputGroup-sizing-default" name="img">
                     </div>
                     <h3 style="margin-top: 25px">Informações corporativas</h3>
                     <div class="inputformuser">
@@ -39,7 +39,7 @@
                         <input type="text" class="form-control inputformuser"
                                aria-label="Sizing example input"
                                aria-describedby="inputGroup-sizing-default" name="company"
-                               value="{% if session.role != 'Administrador' %} {{session.empresa}} {% endif %}"
+                               value="{% if session.role != 'Administrador' %} {{session.company}} {% endif %}"
                                {% if session.role != 'Administrador' %} {{'readonly'}} {% endif %}required>
                     </div>
                     <div class="inputformuser">
@@ -47,7 +47,7 @@
                         <input type="text" class="form-control inputformuser"
                                aria-label="Sizing example input"
                                aria-describedby="inputGroup-sizing-default" name="department"
-                               value="{% if session['role' != 'Gestor' or 'Administrador'] %} {{ session.departamento }} {% endif %}"
+                               value="{% if session['role' != 'Gestor' or 'Administrador'] %} {{ session.departament }} {% endif %}"
                                {% if session['role' != 'Gestor' or 'Administrador'] %} {{readonly}} {% endif %}
                         required>
                     </div>

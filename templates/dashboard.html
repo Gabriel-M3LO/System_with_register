@@ -12,8 +12,18 @@
         color: white;
         border-bottom: solid white 1px;
     }
+
+    .container{
+        text-align: center;
+    }
 </style>
 
+{%if arquivos_por_departamento == {} %}
+    <div class="container">
+        <img src="{{url_for('static', filename='img/404.png')}}" style="width: 40%; height: 40%">
+        <div><h1>Infelizmente você não tem dashboards cadastradas!</h1></div>
+    </div>
+{%endif%}
 
 <div style="width: 100%">
     <div style="padding: 10px 50px 0px 50px">
@@ -22,7 +32,9 @@
                 class="bi bi-file-earmark-plus "></i>Adicionar novo arquivo
         </a>
         {% endif %}
-        <p style="font-size: 25px; display: inline-block">Departamentos disponíveis</p>
+        {% if arquivos_por_departamento != {} %}
+           <p style="font-size: 25px; display: inline-block">Departamentos disponíveis</p>
+        {% endif %}
     </div>
     {% for departamento, arquivos in arquivos_por_departamento.items() %}
     <div class="department-section background_swipper">

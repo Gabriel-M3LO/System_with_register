@@ -7,7 +7,7 @@ import os
 app = Flask(__name__)
 app.secret_key = 'root'
 
-
+"""
 app.config['SQLALCHEMY_DATABASE_URI'] = \
     '{SGBD}://{usuario}:{senha}@{servidor}/{database}'.format(
         SGBD='mysql+mysqlconnector',
@@ -26,7 +26,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = \
         servidor='localhost',
         database='gestao_correta'
     )
-"""
+
 
 app.config['MAIL_SERVER'] = 'smtp-relay.gmail.com'
 app.config['MAIL_PORT'] = 4
@@ -50,7 +50,6 @@ class users(db.Model):
 
     def __repr__(self):
         return '<Usuario {}>'.format(self.username)
-
 
 class files(db.Model):
     idFiles = db.Column(db.Integer, primary_key=True)
@@ -76,17 +75,23 @@ def index():
 
 @app.route('/autenticar', methods=['POST'])
 def autenticar():
-    usuario = users.query.filter_by(email=request.form['email']).first()
-    if usuario:
-        if usuario.password == request.form['password']:
-            session['usuario_logado'] = usuario.username
-            session['departament'] = usuario.departament
-            session['username'] = usuario.username
-            session['company'] = usuario.company
-            session['role'] = usuario.role
-            return redirect(url_for('dashboard'))
+    if request.method == 'POST':
+        try:
+            usuario = users.query.filter_by(email=request.form['email']).first()
+            if usuario and usuario.password == request.form['password']:
+                session['usuario_logado'] = usuario.username
+                session['departament'] = usuario.departament
+                session['username'] = usuario.username
+                session['company'] = usuario.company
+                session['role'] = usuario.role
+                return redirect(url_for('dashboard'))
+            else:
+                flash('Email ou senha incorretos', 'danger')
+        except Exception as e:
+            flash(f'Ocorreu um erro: {str(e)}', 'danger')
 
     return render_template('index.html')
+
 
 @app.route('/RecuperarSenha', methods=['GET', 'POST'])
 def RecuperarSenha():
@@ -111,12 +116,11 @@ def dashboard():
     if 'usuario_logado' in session:
         if session['role'] == 'Administrador':
             arquivos = files.query.all()
-            print(arquivos)
         elif session['role'] == 'Gerente de departamento':
             arquivos = files.query.filter_by(fileDepartment=session['departament'], fileCompany=session['company']).all()
         elif session['role'] == 'Gestor':
             user_id = users.query.filter_by(username=session['usuario_logado']).first().idusers
-            arquivos = db.session.query(files).join(filesusers).filter(filesusers.idusers == user_id).all()
+            arquivos = db.session.query(files).join(files_users).filter(files_users.c.idusers == user_id).all()
         else:
             user_id = users.query.filter_by(username=session['usuario_logado']).first().idusers
             arquivos = db.session.query(files).join(files_users).join(users).filter(files_users.c.idusers == user_id).all()
@@ -134,6 +138,7 @@ def dashboard():
         else:
             departamento_name = []
 
+        print(arquivos_por_departamento)
         return render_template('dashboard.html', arquivos_por_departamento=arquivos_por_departamento, departamento_name=departamento_name)
     return redirect(url_for('index'))
 
@@ -227,6 +232,18 @@ def config():
 
     return render_template('config.html',dashboards=dashboards, arquivos=arquivos, usuarios=usuarios, titulo='config')
 
+@app.route('/perfil', methods=['GET', 'POST'])
+def perfil():
+    if request.method == 'POST':
+        senha = request.form['senha']
+        Novasenha = request.form['NovaSenha']
+        NovaSenhaNovamente = request.form['NovaSenhaNovamente']
+
+        user = users.query.filter_by(senha=senha).first()
+        print(user)
+
+
+    return render_template('perfil.html')
 
 @app.route('/CadastrarUser', methods=['GET', 'POST'])
 def CadastrarUser():
