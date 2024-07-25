@@ -64,7 +64,7 @@
     <h4>Departamento: {{ session.departament }}</h4>
     <div class="d-flex align-items-center flex-column bd-highlight mb-3 " style="height: 300px">
         <a class="btn btn-primary anavlateral" href="/dashboard" role="button">Início</a>
-        <!-- ><a class="btn btn-primary anavlateral" href="/perfil" role="button">Perfil</a> --!>
+        <!-- ><a class="btn btn-primary anavlateral" href="/perfil" role="button">Perfil</a> -->
         {% if session['role'] != 'Departamento'%}
         <a class="btn btn-primary anavlateral" href="/config" role="button">Configurações</a>
         {% endif %}
