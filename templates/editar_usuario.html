@@ -1,72 +1,64 @@
 {% extends "template-navb.html" %}
 {% block content %}
 
-<div style="height: 100%;">
-    <div class="row" style="height: 100%;">
-        <div class="divform">
-            <div class="titleform">
-                <div class="titlebutton">
-                    <a href="/config">
-                        <i class="bi bi-arrow-bar-left" style="font-size: 32px; color: white"></i>
-                    </a>
-                </div>
+<div class="container-fluid mt-5">
+    <h3 class="text-center">Atualizar cadastro</h3>
+    <form action="{{ url_for('editar_usuario', id=usuario.idusers) }}" method="POST">
+        <div class="row border-3 m-5 border rounded-4 p-4">
+            <div class="text-center">
+                <h4 class="mb-3">
+                    Informações pessoais
+                </h4>
             </div>
-            <div class="backgroundform">
-                <form action="{{ url_for('editar_usuario', id=usuario.idusers) }}" method="POST" style="margin-top: 50px;">
-                    <div>
-                        <h3>Informações pessoais</h3>
-                        <div class="inputformuser">
-                            <label>Nome Completo</label>
-                            <input class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="username"
-                                   value="{{ usuario.username }}" required>
-                        </div>
-                        <div class="inputformuser">
-                            <label>Email</label>
-                            <input type="email" class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="email"
-                                   value="{{ usuario.email }}" required>
-                        </div>
-                        <h3 style="margin-top: 25px">Informações corporativas</h3>
-                        <div class="inputformuser">
-                            <label>Empresa</label>
-                            <input type="text"
-                                   value="{{ usuario.company }}"
-                                   class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="company"
-                                   {% if session['role'] != 'Administrador' %} readonly {% endif %} required>
-                        </div>
-                        <div class="inputformuser">
-                            <label>Departamento</label>
-                            <input type="text"
-                                   value="{{ usuario.departament }}"
-                                   class="form-control inputformuser" aria-label="Sizing example input"
-                                   aria-describedby="inputGroup-sizing-default" style="width: 700px" name="departament"
-                                   {% if session['role'] != 'Administrador' and session['role'] != 'Gerente de departamento' %} readonly {% endif %}>
-                        </div>
-                        <div class="inputformuser" style="width: 300px; margin-top: 10px;">
-                            <label>Nível</label>
-                            <select class="form-select" name="role">
-                                <option value="Departamento" {% if usuario.role == 'Departamento' %}selected{% endif %}>Departamento</option>
-                                {% if session['role'] == 'Administrador' %}
-                                <option value="Gerente de departamento" {% if usuario.role == 'Gerente de departamento' %}selected{% endif %}>Gerente de departamento</option>
-                                <option value="Gestor" {% if usuario.role == 'Gestor' %}selected{% endif %}>Gestor</option>
-                                <option value="Administrador" {% if usuario.role == 'Administrador' %}selected{% endif %}>Administrador</option>
-                                {% endif %}
-                            </select>
-                        </div>
-                        <div class="inputformuser" style="margin-top: 80px;">
-                            <button class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" type="submit">Atualizar cadastro</button>
-                        </div>
-                    </div>
-                </form>
+            <div class="col-md-6">
+                <input type="text" class="form-control form-control-lg col-form-label" placeholder="Nome Completo"
+                       aria-label="Username"
+                       aria-describedby="basic-addon1" name="username" value="{{ usuario.username }}" required>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control form-control-lg col-form-label" placeholder="Email"
+                       aria-label="Username"
+                       aria-describedby="basic-addon1" name="email" value="{{ usuario.email }}" required>
             </div>
         </div>
-    </div>
+        <div class="row border-3 m-5 border rounded-4 p-4">
+            <div class="text-center">
+                <h4 class="mb-3">
+                    Informações corporativas
+                </h4>
+            </div>
+            <div class="col-md-6">
+                <input type="text"
+                       value="{{usuario.company}}"
+                       class="form-control form-control-lg col-form-label" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default" placeholder="Empresa" name="company"
+                       {% if session['role']!='Administrador'%} readonly {% endif %}>
+            </div>
+            <div class="col-md-6">
+                <input type="text"
+                       value="{{usuario.departament}}"
+                       class="form-control form-control-lg col-form-label" aria-label="Sizing example input"
+                       aria-describedby="inputGroup-sizing-default" placeholder="Departamento"
+                       name="departament"
+                       {% if session['role'] != 'Administrador' and session['role'] != 'Gerente de departamento'
+                and session['role'] != 'Gestor' %} readonly {% endif %} required>
+            </div>
+            <div class="col-md-12 mt-3">
+                <select class="form-select-lg form-select" name="role">
+                    <option value="Departamento">Departamento</option>
+                    {% if session['role'] == 'Administrador' or session['role'] == 'Gestor' %}
+                    <option value="Gerente de departamento">Gerente de departamento</option>
+                    {% if session['role'] == 'Administrador' %}
+                    <option value="Gestor">Gestor</option>
+                    <option value="Administrador">Administrador</option>
+                    {% endif %}
+                    {% endif %}
+                </select>
+            </div>
+        </div>
+        <div class="text-center mb-3">
+            <button class=" col-3 mx-auto btn-lg btn btn-warning" type="submit">Atualizar cadastro</button>
+        </div>
+    </form>
 </div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
 {% endblock %}

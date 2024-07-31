@@ -1,82 +1,96 @@
 {% extends "template-navb.html"%}
 {% block content%}
 
-<style>
-    .background_swipper {
-        background-color: #152242;
-        padding: 10px 10px 20px 10px;
-        margin-top: 10px;
-    }
-    .swipper_title {
-        text-align: center;
-        color: white;
-        border-bottom: solid white 1px;
-    }
-
-    .container{
-        text-align: center;
-    }
-</style>
-
 {%if arquivos_por_departamento == {} %}
-    <div class="container">
-        <img src="{{url_for('static', filename='img/404.png')}}" style="width: 40%; height: 40%">
-        <div><h1>Infelizmente você não tem dashboards cadastradas!</h1></div>
-    </div>
+<div class="container">
+    <img src="{{url_for('static', filename='img/404.png')}}" style="width: 40%; height: 40%">
+    <div><h1>Infelizmente você não tem dashboards cadastradas!</h1></div>
+</div>
 {%endif%}
 
-<div style="width: 100%">
-    <div style="padding: 10px 50px 0px 50px">
-        {% if session['role'] != 'Departamento' %}
-        <a class="btn btn-primary" style="display: inline-block; float:right" href="/CadastrarDashboard"> <i
-                class="bi bi-file-earmark-plus "></i>Adicionar novo arquivo
-        </a>
-        {% endif %}
-        {% if arquivos_por_departamento != {} %}
-           <p style="font-size: 25px; display: inline-block">Departamentos disponíveis</p>
-        {% endif %}
+<div class="container-fluid">
+    <div class="text-center">
+        <h3>
+            <br> <br>
+            Arquívos disponíveis
+            <br>
+        </h3>
     </div>
-    {% for departamento, arquivos in arquivos_por_departamento.items() %}
-    <div class="department-section background_swipper">
-        <div class="swipper_title">
-            <h2 style="margin-left: 50px">Departamento {{ departamento }}</h2>
-        </div>
-        <div class="swiper mySwiper department-container">
-            <div class="swiper-wrapper" style="margin-top: 20px">
-                {% for arquivo in arquivos %}
-                <a href="http://{{ arquivo.link }}" class="swiper-slide file-card">
-                    <img src="static/dash/{{arquivo.fileImage}}" alt="">
-                    <h5>{{ arquivo.title }}</h5>
-                </a>
-                {% endfor %}
-            </div>
-            <div class="swiper-button-next"></div>
-            <div class="swiper-button-prev"></div>
-            <div class="swiper-pagination"></div>
-        </div>
-    </div>
-    {% endfor %}
-</div>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"></script>
-<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 
-<!-- Initialize Swiper -->
-<script>
-    var swiper = new Swiper(".mySwiper", {
-        slidesPerView: 4,
-        spaceBetween: 30,
-        slidesPerGroup: 3,
-        loop: true,
-        loopFillGroupWithBlank: true,
-        pagination: {
-            el: ".swiper-pagination",
-            clickable: true,
-        },
-        navigation: {
-            nextEl: ".swiper-button-next",
-            prevEl: ".swiper-button-prev",
-        },
-    });
-</script>
+    <div class="">
+            <nav aria-label="Navegação de página">
+                <ul class="pagination justify-content-end mt-4" style="max-width: 95%">
+                    {% if arquivos.has_prev %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('dashboard', page=arquivos.prev_num) }}"
+                           aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Anterior">
+                            <span aria-hidden="true">&laquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+
+                    {% for page_num in arquivos.iter_pages() %}
+                    {% if page_num %}
+                    {% if page_num == arquivos.page %}
+                    <li class="page-item active"><a class="page-link" href="#">{{ page_num }}</a></li>
+                    {% else %}
+                    <li class="page-item"><a class="page-link" href="{{ url_for('dashboard', page=page_num) }}">{{
+                        page_num
+                        }}</a></li>
+                    {% endif %}
+                    {% else %}
+                    <li class="page-item disabled"><a class="page-link" href="#">…</a></li>
+                    {% endif %}
+                    {% endfor %}
+
+                    {% if arquivos.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="{{ url_for('dashboard', page=arquivos.next_num) }}"
+                           aria-label="Próximo">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% else %}
+                    <li class="page-item disabled">
+                        <a class="page-link" href="#" aria-label="Próximo">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                    {% endif %}
+                </ul>
+            </nav>
+    </div>
+
+    <div class="container-fluid col">
+        {% for arquivo in arquivos %}
+        <div class="card mb-3" style="max-width: 95%;">
+            <div class="row g-0">
+                <div class="col-md-1">
+                    <a href="http://{{ arquivo.link }}">
+                        <img src="{{url_for('static', filename='img/icondash.jpg')}}"
+                             class="img-fluid rounded-start"
+                             alt="...">
+                    </a>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ arquivo.title }}</h5>
+                        <p class="card-text">This is a wider card with supporting text below as a natural lead-in to
+                            additional content. This content is a little bit longer.</p>
+                        <p class="card-text"><small class="text-body-secondary"> Departamento: {{
+                            arquivo.fileDepartment}}</small></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+
 {%endblock%}

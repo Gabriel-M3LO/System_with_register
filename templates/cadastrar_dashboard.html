@@ -1,101 +1,72 @@
 {% extends "template-navb.html"%}
 {% block content%}
 
-<div class="titleform">
-    <div class="titlebutton">
-        <a href="/dashboard">
-            <i class="bi bi-arrow-bar-left" style="font-size: 32px; color: white"></i>
-        </a>
-    </div>
-</div>
-<div class="form-and-users">
-    <div class="backgroundform">
-        <div style="padding: 50px 10px 10px 10px">
-            <form action="{{url_for('CadastrarDashboard')}}" method="POST">
-                <div>
-                    <h3>Informações dashboard</h3>
-                    <div class="inputformuser">
-                        <label>Título</label>
-                        <input class="form-control inputformuser" aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default"
-                               name="title" required>
-                    </div>
-                    <div class="inputformuser">
-                        <label>Link</label>
-                        <input type="text" class="form-control inputformuser"
-                               aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default"
-                               name="link" required>
-                    </div>
-                    <div class="inputformuser">
-                        <label>Imagem</label>
-                        <input type="file" class="form-control inputformuser"
-                               aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default" name="img">
-                    </div>
-                    <h3 style="margin-top: 25px">Informações corporativas</h3>
-                    <div class="inputformuser">
-                        <label>Empresa</label>
-                        <input type="text" class="form-control inputformuser"
-                               aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default" name="company"
-                               value="{% if session.role != 'Administrador' %} {{session.company}} {% endif %}"
-                               {% if session.role != 'Administrador' %} {{'readonly'}} {% endif %}required>
-                    </div>
-                    <div class="inputformuser">
-                        <label>Departamento</label>
-                        <input type="text" class="form-control inputformuser"
-                               aria-label="Sizing example input"
-                               aria-describedby="inputGroup-sizing-default" name="department"
-                               value="{% if session['role' != 'Gestor' or 'Administrador'] %} {{ session.departament }} {% endif %}"
-                               {% if session['role' != 'Gestor' or 'Administrador'] %} {{readonly}} {% endif %}
-                        required>
-                    </div>
-                </div>
-                <div class="inputformuser" style="margin-top: 80px; ">
-
-                </div>
-                <div style="width: 100%; text-align: center">
-                    <button class="mt-auto p-2 bd-highlight btn btn-primary anavlateral" style="width: 150px"
-                            type="reset">
-                        Limpar
-                    </button>
-                    <button class="mt-auto p-2 bd-highlight btn btn-warning anavlateral" style="width: 150px"
-                            type="submit">
-                        Cadastrar
-                    </button>
-                </div>
+<div class="container-fluid mt-5">
+    <h3 class="text-center">Cadastrar dashboard</h3>
+    <form action="{{ url_for('CadastrarDashboard') }}" method="POST">
+        <div class="row border-3 m-3 border rounded-4 p-4">
+            <div class="text-center">
+                <h5 class="mb-3">
+                    Informações da dashboard
+                </h5>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control form-control-lg col-form-label" placeholder="Título" name="title"
+                       required>
+            </div>
+            <div class="col-md-6">
+                <input type="text" class="form-control form-control-lg col-form-label" placeholder="Link" name="link"
+                       required>
+            </div>
         </div>
-    </div>
-    <div class="listusers"
-    ">
-    <div style="padding: 60px 20px 20px 20px">
-        <h3>Usuários disponíveis</h3>
-        <table class="table table-sm">
-            <thead>
-            <tr style="color: white; background: none; border: solid 1px white">
-                <th scope="col">#</th>
-                <th scope="col">Nome</th>
-                <th scope="col">Empresa</th>
-                <th scope="col">Departamento</th>
-            </tr>
-            </thead>
-            <tbody>
-            {% for usuario in usuarios %}
-            <tr>
-                <td><input type="checkbox" name="usuario" value="{{ usuario.idusers }}" style="width: 20px"></td>
-                <td>{{ usuario.username }}</td>
-                <td>{{ usuario.company }}</td>
-                <td>{{ usuario.departament }}</td>
-            </tr>
-            {% endfor %}
-            </tbody>
-        </table>
-        </form>
-    </div>
-</div>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+        <div class="row border-3 m-3 border rounded-4 p-4">
+            <div class="text-center">
+                <h5 class="mb-3">
+                    Informações corporativas
+                </h5>
+            </div>
+            <div class="col-md-6">
+                <input type="text"
+                       value="{% if session['role'] != 'Administrador' %}{{ session.company }}{% endif %}"
+                       class="form-control form-control-lg col-form-label" placeholder="Empresa" name="company"
+                       {% if session['role']!='Administrador'%} readonly {% endif %}>
+            </div>
+            <div class="col-md-6">
+                <input type="text"
+                       value="{% if session['role'] != 'Administrador' and session['role'] != 'Gestor' %}{{ session.departament }}{% endif %}"
+                       class="form-control form-control-lg col-form-label" placeholder="Departamento"
+                       name="department"
+                       {% if session['role'] != 'Administrador' and session['role'] != 'Gerente de departamento'
+                and session['role'] != 'Gestor' %} readonly {% endif %} required>
+            </div>
+        </div>
 
+        <div class="row border-3 m-2 border rounded-4 p-4">
+            <table class="table table-sm">
+                <thead>
+                <tr style="color: white; background: none; border: solid 1px white">
+                    <th scope="col">#</th>
+                    <th scope="col">Nome</th>
+                    <th scope="col">Empresa</th>
+                    <th scope="col">Departamento</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for usuario in usuarios %}
+                <tr>
+                    <td><input type="checkbox" name="usuario" value="{{ usuario.idusers }}" style="width: 20px"></td>
+                    <td>{{ usuario.username }}</td>
+                    <td>{{ usuario.company }}</td>
+                    <td>{{ usuario.departament }}</td>
+                </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <div class="text-center mt-5">
+            <button class=" col-3 mx-auto btn-lg btn btn-primary" type="reset">Limpar</button>
+            <button class=" col-3 mx-auto btn-lg btn btn-warning" type="submit">Cadastrar</button>
+        </div>
+    </form>
+</div>
 {%endblock%}

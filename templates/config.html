@@ -1,102 +1,97 @@
 {% extends "template-navb.html" %}
 {% block content %}
 
-<div class="container-fluid" style="height: 100vh;">
-    <div class="row" style="height: 100%;">
-        <div class="col" style="padding: 20px 0px 0px 20px;">
-            <div style="padding: 20px 40px 20px 40px; height: calc(100vh - 40px); overflow-y: auto;">
-                <!-- Seção de Usuários -->
-                <div style="margin-bottom: 40px;">
-                    <p style="font-size: 25px; display: inline-block;">Adicionar Usuário</p>
-                    <a href="/CadastrarUser" class="btn btn-primary" style="display: inline-block; float:right;">
-                        <i class="bi bi-file-earmark-plus"></i>
-                        Adicionar usuário
-                    </a>
-                    <div style="max-height: 300px; overflow-y: auto;">
-                        <table class="table table-striped">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Nome</th>
-                                    <th scope="col">Email</th>
-                                    <th scope="col">Empresa</th>
-                                    <th scope="col">Departamento</th>
-                                    <th scope="col">Nível</th>
-                                    <th scope="col">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for usuario in usuarios %}
-                                <tr>
-                                    <td>{{ usuario.idusers }}</td>
-                                    <td>{{ usuario.username }}</td>
-                                    <td>{{ usuario.email }}</td>
-                                    <td>{{ usuario.company }}</td>
-                                    <td>{{ usuario.departament }}</td>
-                                    <td>{{ usuario.role }}</td>
-                                    <td>
-                                        <a href="{{ url_for('editar_usuario', id=usuario.idusers) }}" class="btn btn-warning btn-sm">Editar</a>
-                                        <form action="{{ url_for('excluirUsuario', usuario_id=usuario.idusers) }}" method="POST" style="display:inline;">
-                                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+<div class="container-fluid">
+        <div class="text-center">
+            <h3>
+                <br> <br>
+                Tabela de usuários
+                <br>
+            </h3>
+        </div>
 
-                <hr style="border-top: 2px solid #000;">
+        <!-- Seção de Usuários -->
+        <div>
+            <div style="max-height: 200px; overflow-y: auto">
+                <table class="table table-bordered">
+                    <thead class="table-dark">
+                    <tr>
+                        <th scope="col">Nome</th>
+                        <th scope="col">Email</th>
+                        <th scope="col">Empresa</th>
+                        <th scope="col">Departamento</th>
+                        <th scope="col">Nível</th>
+                        <th scope="col">Ações</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for usuario in usuarios %}
+                    <tr>
+                        <td>{{ usuario.username }}</td>
+                        <td>{{ usuario.email }}</td>
+                        <td>{{ usuario.company }}</td>
+                        <td>{{ usuario.departament }}</td>
+                        <td>{{ usuario.role }}</td>
+                        <td>
+                            <a href="{{ url_for('editar_usuario', id=usuario.idusers) }}"
+                               class="btn btn-warning btn-sm">Editar</a>
+                            <form action="{{ url_for('excluirUsuario', usuario_id=usuario.idusers) }}" method="POST"
+                                  style="display:inline;">
+                                <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
 
-                <!-- Seção de Dashboards -->
-                <div style="margin-top: 40px;">
-                    <p style="font-size: 25px; display: inline-block;">Adicionar Dashboard</p>
-                    <a href="/CadastrarDashboard" class="btn btn-primary" style="display: inline-block; float:right;">
-                        <i class="bi bi-file-earmark-plus"></i>
-                        Adicionar dashboard
-                    </a>
-                    <div style="max-height: 300px; overflow-y: auto;">
-                        <table class="table table-striped">
-                            <thead class="thead-dark">
-                                <tr>
-                                    <th scope="col">ID</th>
-                                    <th scope="col">Título</th>
-                                    <th scope="col">Link</th>
-                                    <th scope="col">Imagem</th>
-                                    <th scope="col">Empresa</th>
-                                    <th scope="col">Departamento</th>
-                                    <th scope="col">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {% for dashboard in dashboards %}
-                                <tr>
-                                    <td>{{ dashboard.idFiles }}</td>
-                                    <td>{{ dashboard.title }}</td>
-                                    <td>{{ dashboard.link }}</td>
-                                    <td>{{ dashboard.fileImage }}</td>
-                                    <td>{{ dashboard.fileCompany }}</td>
-                                    <td>{{ dashboard.fileDepartment }}</td>
-                                    <td>
-                                        <a href="{{ url_for('editar_dashboard', id=dashboard.idFiles) }}" class="btn btn-warning btn-sm">Editar</a>
-                                        <form action="{{ url_for('excluir_dashboard', dashboard_id=dashboard.idFiles) }}" method="POST" style="display:inline;">
-                                            <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
-                                        </form>
-                                    </td>
-                                </tr>
-                                {% endfor %}
-                            </tbody>
-                        </table>
-                    </div>
+        <hr class="border-dark" style="border-top: 2px solid #000;">
+
+        <div class="text-center">
+            <h3>
+                <br>
+                Tabela de Dashboards
+                <br>
+            </h3>
+        </div>
+
+        <!-- Seção de Dashboards -->
+        <div>
+            <div style="max-height: 200px; overflow-y: auto;">
+                <div class="table table-bordered">
+                    <table class="table table-bordered">
+                        <thead class="table-dark">
+                        <tr>
+                            <th scope="col">Título</th>
+                            <th scope="col">Link</th>
+                            <th scope="col">Empresa</th>
+                            <th scope="col">Departamento</th>
+                            <th scope="col">Ações</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for dashboard in dashboards %}
+                        <tr>
+                            <td>{{ dashboard.title }}</td>
+                            <td>{{ dashboard.link }}</td>
+                            <td>{{ dashboard.fileCompany }}</td>
+                            <td>{{ dashboard.fileDepartment }}</td>
+                            <td>
+                                <a href="{{ url_for('editar_dashboard', id=dashboard.idFiles) }}"
+                                   class="btn btn-warning btn-sm">Editar</a>
+                                <form action="{{ url_for('excluir_dashboard', dashboard_id=dashboard.idFiles) }}"
+                                      method="POST" style="display:inline;">
+                                    <button type="submit" class="btn btn-danger btn-sm">Excluir</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
-
-{% endblock %}
+    {% endblock %}
