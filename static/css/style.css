@@ -26,14 +26,6 @@ bg {
     height: 380px;
 }
 
-input {
-    padding: 15px;
-    border: 10px black;
-    margin-top: 5px;
-    width: 350px;
-    background-color: #eedddd;
-}
-
 html, body {
     height: 100%;
     margin: 0;
